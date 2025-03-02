@@ -27,7 +27,6 @@ RUN		apk update --no-cache						\
 COPY	conf/nginx.conf		/etc/nginx/http.d/nginx.conf
 
 RUN		chmod 755 /var/www/wordpress						
-# RUN		chown -R www-data:www-data /var/www/wordpress
 
 EXPOSE	443
 

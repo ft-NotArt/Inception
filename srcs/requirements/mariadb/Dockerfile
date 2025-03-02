@@ -19,12 +19,10 @@ RUN		apk update --no-cache						\
 			--user=mysql							\
 			--datadir=/var/lib/mysql
 
-COPY	conf/mariadb.conf	/etc/mysql/mariadb.conf.d/mariadb.conf
-COPY	tools/init.sql tools/init.sql
-COPY	tools/init_sql.sh tools/init_sql.sh
+COPY	conf/mariadb-server.cnf	/etc/my.cnf.d/mariadb-server.cnf
+COPY	tools/init.sql /tools/init.sql
+COPY	tools/init_sql.sh /tools/init_sql.sh
 RUN		chmod +x /tools/init_sql.sh
-
-EXPOSE	3306
 
 USER	mysql
 

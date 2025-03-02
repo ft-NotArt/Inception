@@ -8,6 +8,7 @@ all: up
 up:
 	@if [ -f "./srcs/.env" ]; then \
 		mkdir -p /home/notart/data/wordpress /home/notart/data/mariadb ; \
+		sudo chmod 755 /home/notart/data/mariadb /home/notart/data/wordpress ; \
 		$(DOCKER_COMPOSE_CMD) -p $(NAME) -f $(DOCKER_COMPOSE_PATH) up --build -d ; \
 	else \
 		echo "No .env file found in srcs folder, please create one before running make" ; \
