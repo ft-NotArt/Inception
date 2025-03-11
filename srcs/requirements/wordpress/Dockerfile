@@ -1,5 +1,8 @@
 FROM	alpine:3.21.2
 
+ENV FTP_USER=prout
+ENV FTP_PASSWORD=pet
+
 RUN		apk update --no-cache						\
 \
 		&& apk add --no-cache						\

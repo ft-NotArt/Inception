@@ -35,7 +35,13 @@ services:
       dockerfile: Dockerfile
     env_file: .env
     environment:
-      WORDPRESS_DB_HOST: mariadb
+      - WORDPRESS_DB_HOST=mariadb
+      - FTP_BASE=/var/www/html/
+      - FTP_USER=${FTP_USER}
+      - FTP_PASSWORD=${FTP_PASSWORD}
+      - FTP_HOST=ftp
+      - FTP_SSL=false
+      - FS_METHOD=direct
     volumes:
       - wordpress:/var/www/wordpress
     restart: always
@@ -50,6 +56,23 @@ services:
       dockerfile: Dockerfile
     volumes:
       - wordpress:/var/www/wordpress
+    restart: always
+  ftp:
+    container_name: ftp
+    networks:
+      - inception
+    build:
+      context: requirements/bonus/ftp
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      - FTP_USER=${FTP_USER}
+      - FTP_PASSWORD=${FTP_PASSWORD}
+    volumes:
+      - wordpress:/var/www/wordpress
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
     restart: always
 
 
