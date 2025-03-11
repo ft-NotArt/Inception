@@ -32,7 +32,9 @@ if ! wp core is-installed --allow-root --path='/var/www/wordpress'; then
         --skip-email \
         --allow-root \
         --path='/var/www/wordpress'
+fi
 
+if ! wp user exists ${WP_USER_USER}; then
     echo "Creating WordPress user..."
     wp user create "$WP_USER_USER" "$WP_USER_EMAIL" \
         --role=author \
@@ -40,6 +42,29 @@ if ! wp core is-installed --allow-root --path='/var/www/wordpress'; then
         --allow-root \
         --path='/var/www/wordpress'
 fi
+
+# redis cache part
+echo "Huge thanks to cauvray, real GOAT"
+wp config has WP_REDIS_HOST || wp config set WP_REDIS_HOST "redis" --path=/var/www/wordpress
+wp config has WP_REDIS_PORT || wp config set WP_REDIS_PORT 6379 --raw --path=/var/www/wordpress
+wp config has WP_CACHE || wp config set WP_CACHE true --raw --path=/var/www/wordpress
+
+if ! wp plugin is-installed redis-cache; then
+	wp plugin install redis-cache \
+		--allow-root \
+		--path='/var/www/wordpress'
+fi
+
+if ! wp plugin is-active redis-cache; then
+	wp plugin activate redis-cache \
+		--allow-root \
+		--path='/var/www/wordpress'
+fi
+
+wp redis enable \
+	--allow-root \
+	--path='/var/www/wordpress'
+
 
 mkdir -p /run/php
 
