@@ -98,6 +98,21 @@ services:
     ports:
       - "600:80"
     restart: always
+  cadvisor:
+    container_name: cadvisor
+    build:
+      context: requirements/bonus/cadvisor
+      dockerfile: Dockerfile
+    ports:
+      - "500:8080"
+    networks:
+      - inception
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: always
 
 volumes:
   wordpress:
